@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f3">
+  <title>PasarKampus — Marketplace Gunadarma</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="PasarKampus beranda">
+      <span class="brand-icon">P</span>
+      <span>pasar<span class="brand-accent">kampus</span><small>GUNADARMA</small></span>
+    </a>
+    <label class="searchbox">
+      <span aria-hidden="true">⌕</span>
+      <input id="search-input" type="search" placeholder="Cari barang yang kamu butuhkan..." aria-label="Cari barang">
+      <kbd>Enter</kbd>
+    </label>
+    <div class="header-actions">
+      <button class="icon-button hidden" id="messages-nav" aria-label="Pesan" title="Pesan">▤<i id="message-dot"></i></button>
+      <button class="avatar-button hidden" id="account-button" aria-label="Akun"></button>
+      <button class="button button-primary" id="sell-button">＋ <span>Jual barang</span></button>
+      <button class="button button-outline" id="login-button">Masuk</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="welcome-banner" id="welcome-banner">
+      <div class="welcome-copy">
+        <span class="eyebrow">MARKETPLACE KHUSUS GUNADARMA</span>
+        <h1>Barang bagus, <em>harga bersahabat.</em></h1>
+        <p>Jual beli barang preloved dengan teman satu kampus. Lebih dekat, lebih mudah, lebih berkelanjutan.</p>
+        <button class="button button-light" id="welcome-sell">Mulai jual barang <span>→</span></button>
+      </div>
+      <div class="banner-art" aria-hidden="true">
+        <span class="art-spark">✳</span><span class="art-circle"></span>
+        <span class="art-card art-card-one">📚<small>Buku kuliah</small></span>
+        <span class="art-card art-card-two">🎧<small>Headphone</small></span>
+        <span class="art-card art-card-three">🪴<small>Teman kos</small></span>
+      </div>
+    </section>
+
+    <nav class="section-nav" aria-label="Navigasi utama">
+      <button class="nav-tab active" data-view="market">Jelajahi</button>
+      <button class="nav-tab signed-in-only hidden" data-view="my-listings">Barang saya</button>
+      <button class="nav-tab signed-in-only hidden" data-view="chats">Pesan <span id="chat-count" class="count-pill hidden">0</span></button>
+      <button class="nav-tab signed-in-only hidden" data-view="profile">Profil saya</button>
+      <span class="nav-campus"><span>●</span> Komunitas Gunadarma</span>
+    </nav>
+
+    <section class="view-panel" id="market-view">
+      <div class="market-heading">
+        <div><span class="eyebrow">TEMUKAN HARTA KARUNMU</span><h2>Jelajahi barang</h2></div>
+        <label class="category-select"><span>Kategori</span><select id="category-filter"><option value="">Semua kategori</option></select></label>
+      </div>
+      <div class="listing-grid" id="listing-grid"></div>
+      <div class="empty-state hidden" id="market-empty">
+        <span>⌕</span><h3>Belum ada barang di sini</h3><p>Coba kata kunci lain, atau jadilah yang pertama mulai jualan.</p>
+        <button class="button button-primary" id="empty-sell">Jual barang pertama</button>
+      </div>
+    </section>
+
+    <section class="view-panel hidden" id="my-listings-view">
+      <div class="market-heading"><div><span class="eyebrow">ETALASE PRIBADI</span><h2>Barang saya</h2></div><button class="button button-primary" id="my-sell">＋ Jual barang</button></div>
+      <div class="listing-grid" id="my-listing-grid"></div>
+      <div class="empty-state hidden" id="my-listing-empty"><span>＋</span><h3>Etalasemu masih kosong</h3><p>Pasang barang pertama yang ingin kamu jual.</p></div>
+    </section>
+
+    <section class="view-panel hidden" id="chats-view">
+      <div class="market-heading"><div><span class="eyebrow">OBROLAN LANGSUNG</span><h2>Pesan</h2></div></div>
+      <div class="chat-shell">
+        <aside class="conversation-list" id="conversation-list"></aside>
+        <div class="chat-window" id="chat-window">
+          <div class="chat-placeholder"><span>▤</span><h3>Pilih percakapan</h3><p>Diskusikan kondisi barang dan sepakati meetup langsung di sini.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view-panel hidden" id="profile-view">
+      <div class="market-heading"><div><span class="eyebrow">AKUN KAMU</span><h2>Profil saya</h2></div></div>
+      <form id="profile-form" class="profile-card">
+        <div class="profile-photo-wrap">
+          <div class="profile-photo" id="profile-photo">?</div>
+          <label class="photo-edit" for="profile-avatar" title="Ganti foto">＋</label>
+          <input id="profile-avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" class="visually-hidden">
+        </div>
+        <div class="profile-fields">
+          <label>Nama lengkap<input name="fullName" required minlength="2" maxlength="100"></label>
+          <label>Username <span class="field-hint">opsional · dipakai sebagai identitas publik</span><input name="username" maxlength="30" pattern="[A-Za-z0-9_]{3,30}" placeholder="contoh: zacky_24"></label>
+          <label>NPM <span class="field-hint">hanya dapat dilihat oleh kamu</span><input name="npm" readonly></label>
+          <label>Nomor telepon <span class="field-hint">pribadi · tidak ditampilkan ke pengguna lain</span><input name="phone" required inputmode="tel" placeholder="08xxxxxxxxxx"></label>
+          <div class="profile-actions"><button class="button button-primary" type="submit">Simpan profil</button><button class="button button-quiet" id="logout-button" type="button">Keluar akun</button></div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer><span class="brand-mini">pasarkampus</span><span>Komunitas jual beli mahasiswa Universitas Gunadarma</span><span>Meetup langsung · Tanpa biaya admin</span></footer>
+
+  <dialog id="auth-dialog" class="modal auth-modal">
+    <button class="modal-close" data-close="auth-dialog" aria-label="Tutup">×</button>
+    <div class="modal-brand brand"><span class="brand-icon">P</span><span>pasar<span class="brand-accent">kampus</span><small>GUNADARMA</small></span></div>
+    <div class="auth-intro"><span class="eyebrow">KOMUNITAS GUNADARMA</span><h2 id="auth-title">Selamat datang kembali</h2><p id="auth-subtitle">Masuk untuk mulai terhubung dengan teman kampus.</p></div>
+    <div class="auth-switch"><button class="active" data-auth-mode="login">Masuk</button><button data-auth-mode="register">Daftar</button></div>
+    <form id="auth-form">
+      <label>NPM<input name="npm" inputmode="numeric" autocomplete="username" placeholder="8 digit NPM" required maxlength="8"></label>
+      <div class="register-only hidden"><label>Nama lengkap<input name="fullName" autocomplete="name" maxlength="100"></label></div>
+      <div class="register-only hidden"><label>Username <span class="field-hint">opsional</span><input name="username" autocomplete="nickname" maxlength="30" placeholder="Huruf, angka, garis bawah"></label></div>
+      <div class="register-only hidden"><label>Nomor telepon <span class="field-hint">tidak ditampilkan ke pengguna lain</span><input name="phone" autocomplete="tel" inputmode="tel" placeholder="08xxxxxxxxxx"></label></div>
+      <label>Kata sandi<input name="password" type="password" autocomplete="current-password" minlength="8" placeholder="Minimal 8 karakter" required></label>
+      <div class="form-error hidden" id="auth-error"></div>
+      <button class="button button-primary button-wide" id="auth-submit" type="submit">Masuk</button>
+    </form>
+    <p class="privacy-note">🔒 NPM dan nomor teleponmu tidak ditampilkan kepada pengguna lain.</p>
+  </dialog>
+
+  <dialog id="listing-dialog" class="modal form-modal">
+    <button class="modal-close" data-close="listing-dialog" aria-label="Tutup">×</button>
+    <span class="eyebrow">BUAT ETALASE</span><h2>Jual barangmu</h2><p class="modal-lead">Ceritakan barangmu dengan jujur. Transaksi dan meetup diatur langsung lewat chat.</p>
+    <form id="listing-form">
+      <label>Nama barang<input name="title" required minlength="3" maxlength="150" placeholder="Contoh: Buku Pengantar Akuntansi"></label>
+      <label>Deskripsi<textarea name="description" required maxlength="5000" rows="4" placeholder="Jelaskan kondisi, kelengkapan, dan detail lain..."></textarea></label>
+      <div class="form-row">
+        <label>Harga (Rp)<input name="price" type="number" min="0" step="1000" required placeholder="50000"></label>
+        <label>Kategori<select name="categoryId" required></select></label>
+      </div>
+      <div class="form-row">
+        <label>Kondisi<select name="itemCondition" required>
+          <option value="">Pilih kondisi</option><option value="needs_repair">Perlu perbaikan</option>
+          <option value="fair">Layak</option><option value="good">Bagus</option><option value="like_new">Seperti baru</option>
+        </select></label>
+        <label>Lokasi meetup <span class="field-hint">opsional</span><input name="meetupLocation" maxlength="150" placeholder="Contoh: Kampus D, Kelapa Dua"></label>
+      </div>
+      <label>Foto barang <span class="field-hint">opsional · maksimal 4 foto, 5 MB per foto</span><input name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
+      <div class="form-error hidden" id="listing-error"></div>
+      <button class="button button-primary button-wide" type="submit">Pasang barang</button>
+    </form>
+  </dialog>
+
+  <dialog id="detail-dialog" class="modal detail-modal">
+    <button class="modal-close" data-close="detail-dialog" aria-label="Tutup">×</button>
+    <div id="detail-content"></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
