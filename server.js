@@ -14,7 +14,7 @@ const { Pool } = require("pg");
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
-const host = process.env.HOST || "127.0.0.1";
+const host = process.env.HOST || "192.168.1.83";
 const sessionSecret = process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex");
 const uploadDir = path.join(__dirname, "uploads");
 const pool = new Pool({
@@ -55,7 +55,7 @@ const imageUpload = multer({
 });
 
 app.disable("x-powered-by");
-app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
+app.use(helmet({contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: "same-site" } }));
 app.use(express.json({ limit: "20kb" }));
 app.use(express.urlencoded({ extended: false, limit: "20kb" }));
 app.use(session({
